@@ -13,7 +13,7 @@
             <input type="submit" value="login">
         </form>
         <div>
-            ${invalid}
+            ${log}
         </div>
     </body>
 </html>
