@@ -7,7 +7,7 @@
     </head>
     <body>
         <h1>Home Page</h1>
-        <h2>Hello ${user}</h2>
-        <a href="login">Logout</a>
+        <h2>Hello ${user.username}.</h2>
+        <a href="login?logout=logout">Logout</a>
     </body>
 </html>

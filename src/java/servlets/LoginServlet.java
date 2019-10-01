@@ -17,25 +17,29 @@ public class LoginServlet extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         
-        String logout = (String) session.getAttribute("logout");
+        String logout = (String) request.getParameter("logout");
         
-        if (logout != null){
-            session.invalidate();
+        if (logout != null && logout.equals("logout")){
             request.setAttribute("log", "You have successfully logged out");
+            session.invalidate();
+            getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
+            return;
         }
         
         User user = (User) session.getAttribute("user");
         
         if (user != null){
-            response.sendRedirect("/WEB-INF/home.jsp");
+            response.sendRedirect("home");
+        } else{
+            getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
         }
-        
-        getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         
@@ -48,6 +52,9 @@ public class LoginServlet extends HttpServlet {
         }
         
         if (user != null){
+            user.setUsername(username);
+            user.setPassword(password);
+            session.setAttribute("user", user);
             getServletContext().getRequestDispatcher("/WEB-INF/home.jsp").forward(request, response);
         } else{
             request.setAttribute("username", username);
